@@ -1,0 +1,127 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icons/image-icons.html">
+<link rel="import" href="../paper-styles/paper-styles.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
+
+<!--
+`vote-image-placeholder`
+Image place holder for photos and images
+
+@demo demo/index.html 
+-->
+
+<dom-module id="vote-image-placeholder">
+  <template>
+      <style>
+          :host {
+              display: block;
+              width: inherit;
+              height: inherit;
+              background-color: var(--paper-grey-300);
+          }
+          .center-middle {
+              display: table-cell;
+              vertical-align: middle;
+              width: inherit;
+              height: inherit;
+              position: absolute;
+          }
+          .image-canvas {
+              display: block;
+              width: inherit;
+              height: inherit;
+          }
+          canvas {
+              position: absolute;
+              display: block;
+              height: inherit;
+              width: inherit;
+          }
+          .buttons {
+              width: inherit;
+              height: inherit;
+              display: table-cell;
+              vertical-align: bottom;
+          }
+          .buttons paper-fab{
+              margin-right: 10px;
+              margin-bottom: 10px;
+              float: right;
+              margin-left: 20px;
+          }
+      </style>
+      <div class="center-middle">
+          <div hidden$="{{hiddenAdd}}">
+              <paper-fab icon="add" type='file'></paper-fab>
+          </div>
+          <div hidden$="{{hiddenLike}}">
+              <paper-fab icon="favorite"></paper-fab>
+          </div>
+          <div class="image-canvas" hidden$="{{hiddenEdit}}">
+              <canvas id="image"></canvas>
+              <div class="buttons">
+                  <paper-fab class="btnRemove" icon="delete"></paper-fab>
+                  <paper-fab icon="image:edit"></paper-fab>
+              </div>
+          </div>
+      </div>
+      
+    </template>
+
+  <script>
+      Polymer({
+          is: 'vote-image-placeholder',
+          properties: {
+              mode: {
+                  type: String,
+                  observer: '_changeMode'
+              },
+              image: {
+                  type: String, 
+                  value: '',
+                  observer: '_changeImage'
+              },
+              hiddenAdd: {
+                  type: Boolean,
+                  computed: '_setHiddenAdd(mode)'
+              },
+              hiddenLike: {
+                  type: Boolean,
+                  computed: '_setHiddenLike(mode)'
+              },
+              hiddenEdit: {
+                  type: Boolean,
+                  computed: '_setHiddenEdit(mode)'
+              }
+          },
+          _changeImage: function(){
+              var ctx = this.$.image.getContext('2d');
+              var image = new Image();
+              image.src = this.image;
+              console.log(this.$.image.width);
+              ctx.drawImage(image,0,0,this.$.image.width,this.$.image.height);
+          },
+          _changeMode: function() {
+              this._setHiddenAdd(this.mode);
+              this._setHiddenLike(this.mode);
+              this._setHiddenEdit(this.mode);
+          },
+          _setHiddenAdd: function(mode) {
+              if(this.mode=='add')
+                  return false;
+              return true;
+          },
+          _setHiddenLike: function(mode) {
+              if(this.mode=='like')
+                  return false;
+              return true;
+          },
+          _setHiddenEdit: function(mode) {
+              if(this.mode=='edit')
+                  return false;
+              return true;
+          }
+      });
+  </script>
+</dom-module>
