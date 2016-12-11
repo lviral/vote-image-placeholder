@@ -3,6 +3,7 @@
 <link rel="import" href="../iron-icons/image-icons.html">
 <link rel="import" href="../paper-styles/paper-styles.html">
 <link rel="import" href="../paper-fab/paper-fab.html">
+<link rel="import" href="../paper-input/paper-input.html">
 
 <!--
 `vote-image-placeholder`
@@ -53,7 +54,7 @@ Image place holder for photos and images
       </style>
       <div class="center-middle">
           <div hidden$="{{hiddenAdd}}">
-              <paper-fab icon="add" type='file'></paper-fab>
+              <paper-input type="file" on-change="_changeFile"></paper-input>
           </div>
           <div hidden$="{{hiddenLike}}">
               <paper-fab icon="favorite"></paper-fab>
@@ -77,11 +78,6 @@ Image place holder for photos and images
                   type: String,
                   observer: '_changeMode'
               },
-              image: {
-                  type: String, 
-                  value: '',
-                  observer: '_changeImage'
-              },
               hiddenAdd: {
                   type: Boolean,
                   computed: '_setHiddenAdd(mode)'
@@ -96,16 +92,36 @@ Image place holder for photos and images
               }
           },
           _changeImage: function(){
+              console.log('entro');
               var ctx = this.$.image.getContext('2d');
               var image = new Image();
               image.src = this.image;
-              console.log(this.$.image.width);
               ctx.drawImage(image,0,0,this.$.image.width,this.$.image.height);
           },
           _changeMode: function() {
               this._setHiddenAdd(this.mode);
               this._setHiddenLike(this.mode);
               this._setHiddenEdit(this.mode);
+          },
+          _changeFile: function(e) {
+              var canvas = this.$.image;
+              var file = e.target.files[0];
+              var fr = new FileReader();
+              fr.onloadend = function(e) {
+                  var img = new Image();
+                  img.onload = function(e) {
+                      canvas.width = e.target.width;
+                      canvas.height = e.target.height;
+                      var ctx = canvas.getContext("2d");
+                      ctx.drawImage(e.target,0,0); 
+                      
+                      console.log(canvas);
+                  };
+                  img.src = e.target.result;
+              }
+              fr.readAsDataURL(file);
+              
+              this.mode = 'edit';
           },
           _setHiddenAdd: function(mode) {
               if(this.mode=='add')
