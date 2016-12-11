@@ -62,7 +62,7 @@ Image place holder for photos and images
           <div class="image-canvas" hidden$="{{hiddenEdit}}">
               <canvas id="image"></canvas>
               <div class="buttons">
-                  <paper-fab class="btnRemove" icon="delete"></paper-fab>
+                  <paper-fab class="btnRemove" icon="delete" on-tap="_deleteImage"></paper-fab>
                   <paper-fab icon="image:edit"></paper-fab>
               </div>
           </div>
@@ -91,13 +91,6 @@ Image place holder for photos and images
                   computed: '_setHiddenEdit(mode)'
               }
           },
-          _changeImage: function(){
-              console.log('entro');
-              var ctx = this.$.image.getContext('2d');
-              var image = new Image();
-              image.src = this.image;
-              ctx.drawImage(image,0,0,this.$.image.width,this.$.image.height);
-          },
           _changeMode: function() {
               this._setHiddenAdd(this.mode);
               this._setHiddenLike(this.mode);
@@ -113,9 +106,7 @@ Image place holder for photos and images
                       canvas.width = e.target.width;
                       canvas.height = e.target.height;
                       var ctx = canvas.getContext("2d");
-                      ctx.drawImage(e.target,0,0); 
-                      
-                      console.log(canvas);
+                      ctx.drawImage(e.target,0,0);
                   };
                   img.src = e.target.result;
               }
@@ -137,6 +128,13 @@ Image place holder for photos and images
               if(this.mode=='edit')
                   return false;
               return true;
+          },
+          _deleteImage: function() {
+              console.log('entro');
+              var canvas = this.$.image;
+              var ctx= canvas.getContext('2d');
+              ctx.rect(0,0,canvas.width,canvas.height);
+              this.mode = 'add';
           }
       });
   </script>
