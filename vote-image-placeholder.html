@@ -3,7 +3,6 @@
 <link rel="import" href="../iron-icons/image-icons.html">
 <link rel="import" href="../paper-styles/paper-styles.html">
 <link rel="import" href="../paper-fab/paper-fab.html">
-<link rel="import" href="../paper-input/paper-input.html">
 
 <!--
 `vote-image-placeholder`
@@ -51,10 +50,21 @@ Image place holder for photos and images
               float: right;
               margin-left: 20px;
           }
+          #file {
+              	width: 0.1px;
+                height: 0.1px;
+                opacity: 0;
+                overflow: hidden;
+                position: absolute;
+                z-index: -1;
+          }
       </style>
       <div class="center-middle">
-          <div hidden$="{{hiddenAdd}}">
-              <paper-input type="file" on-change="_changeFile"></paper-input>
+          <div class="buttons" hidden$="{{hiddenAdd}}">
+              <label for="file">
+                  <paper-fab icon="add"></paper-fab>
+              </label>   
+              <input type="file" name="file" id="file" on-change="_changeFile"></input>
           </div>
           <div hidden$="{{hiddenLike}}">
               <paper-fab icon="favorite"></paper-fab>
@@ -96,6 +106,21 @@ Image place holder for photos and images
               this._setHiddenLike(this.mode);
               this._setHiddenEdit(this.mode);
           },
+           _setHiddenAdd: function(mode) {
+              if(this.mode=='add')
+                  return false;
+              return true;
+          },
+          _setHiddenLike: function(mode) {
+              if(this.mode=='like')
+                  return false;
+              return true;
+          },
+          _setHiddenEdit: function(mode) {
+              if(this.mode=='edit')
+                  return false;
+              return true;
+          },
           _changeFile: function(e) {
               var canvas = this.$.image;
               var file = e.target.files[0];
@@ -114,23 +139,7 @@ Image place holder for photos and images
               
               this.mode = 'edit';
           },
-          _setHiddenAdd: function(mode) {
-              if(this.mode=='add')
-                  return false;
-              return true;
-          },
-          _setHiddenLike: function(mode) {
-              if(this.mode=='like')
-                  return false;
-              return true;
-          },
-          _setHiddenEdit: function(mode) {
-              if(this.mode=='edit')
-                  return false;
-              return true;
-          },
           _deleteImage: function() {
-              console.log('entro');
               var canvas = this.$.image;
               var ctx= canvas.getContext('2d');
               ctx.rect(0,0,canvas.width,canvas.height);
