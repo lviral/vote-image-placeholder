@@ -1,3 +1,4 @@
+<script>window.Polymer = {dom: 'shadow'};</script>
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-icons/image-icons.html">
@@ -35,8 +36,8 @@ Image place holder for photos and images
           canvas {
               position: absolute;
               display: block;
-              height: inherit;
-              width: inherit;
+              height: 100%;
+              width: 100%;
           }
           .buttons {
               width: inherit;
@@ -123,6 +124,9 @@ Image place holder for photos and images
           },
           _changeFile: function(e) {
               var canvas = this.$.image;
+              
+              console.log(this.$);
+              
               var file = e.target.files[0];
               var fr = new FileReader();
               fr.onloadend = function(e) {
