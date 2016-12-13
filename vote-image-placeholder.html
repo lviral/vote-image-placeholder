@@ -19,36 +19,11 @@ Image place holder for photos and images
               width: inherit;
               height: inherit;
               background-color: var(--paper-grey-300);
+              position: relative;
           }
-          .center-middle {
-              display: table-cell;
-              vertical-align: middle;
-              width: inherit;
+          #image {
               height: inherit;
-              position: absolute;
-          }
-          .image-canvas {
-              display: block;
               width: inherit;
-              height: inherit;
-          }
-          canvas {
-              position: absolute;
-              display: block;
-              height: 100%;
-              width: 100%;
-          }
-          .buttons {
-              width: inherit;
-              height: inherit;
-              display: table-cell;
-              vertical-align: bottom;
-          }
-          .buttons paper-fab{
-              margin-right: 10px;
-              margin-bottom: 10px;
-              float: right;
-              margin-left: 20px;
           }
           #file {
               	width: 0.1px;
@@ -58,25 +33,24 @@ Image place holder for photos and images
                 position: absolute;
                 z-index: -1;
           }
+          .buttons {
+              position: absolute;
+              bottom: 10px;
+              right: 10px;
+          }
       </style>
-      <div class="center-middle">
-          <div class="buttons" hidden$="{{hiddenAdd}}">
-              <label for="file">
-                  <paper-fab icon="add"></paper-fab>
-              </label>   
-              <input type="file" name="file" id="file" on-change="_changeFile"></input>
-          </div>
-          <div hidden$="{{hiddenLike}}">
-              <paper-fab icon="favorite"></paper-fab>
-          </div>
-          <div class="image-canvas" hidden$="{{hiddenEdit}}">
-              <canvas id="image"></canvas>
-              <div class="buttons">
-                  <paper-fab class="btnRemove" icon="delete" on-tap="_deleteImage"></paper-fab>
-                  <paper-fab icon="image:edit"></paper-fab>
-              </div>
-          </div>
-      </div>
+      
+    <canvas id="image" hidden$="{{hiddenEdit}}"></canvas>
+    <input type="file" name="file" id="file" on-change="_changeFile"></input>
+    <div class="buttons">
+        <paper-fab class="btnRemove" icon="delete" on-tap="_deleteImage" hidden$="{{hiddenEdit}}"></paper-fab><br>
+        <paper-fab icon="image:edit" hidden$="{{hiddenEdit}}"></paper-fab>
+        <paper-fab icon="favorite" hidden$="{{hiddenLike}}"></paper-fab>
+        <label for="file" hidden$="{{hiddenAdd}}">
+            <paper-fab icon="add"></paper-fab>
+        </label>   
+    </div>
+    
       
     </template>
 
