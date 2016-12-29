@@ -66,6 +66,10 @@ Image place holder for photos and images
                   type: Boolean,
                   computed: '_setHiddenAdd(mode)'
               },
+              file: {
+                  type: String,
+                  value: ''
+              },
               hiddenLike: {
                   type: Boolean,
                   computed: '_setHiddenLike(mode)'
@@ -97,7 +101,7 @@ Image place holder for photos and images
           },
           _changeFile: function(e) {
               var canvas = this.$.image;
-              var file = e.target.files[0];
+              this.file = e.target.files[0];
               var fr = new FileReader();
               fr.onloadend = function(e) {
                   var img = new Image();
@@ -109,8 +113,7 @@ Image place holder for photos and images
                   };
                   img.src = e.target.result;
               }
-              fr.readAsDataURL(file);
-              
+              fr.readAsDataURL(this.file);
               this.mode = 'edit';
           },
           _deleteImage: function() {
